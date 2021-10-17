@@ -12,6 +12,22 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    console.log('Component did mount');
+    const contactsString = localStorage.getItem('contacts');
+    const contacts = JSON.parse(contactsString);
+    if (contacts) {
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('Component did update');
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   handleAddContact = data => {
     const { name, number } = data;
     const id = uuidv4();
@@ -46,22 +62,6 @@ class App extends Component {
       return contacts;
     }
   };
-
-  componentDidMount() {
-    console.log('Component did mount');
-    const contactsString = localStorage.getItem('contacts');
-    const contacts = JSON.parse(contactsString);
-    if (contacts) {
-      this.setState({ contacts });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log('Component did update');
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   render() {
     const { filter } = this.state;
